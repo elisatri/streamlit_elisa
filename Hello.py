@@ -1,23 +1,26 @@
 import streamlit as st
 import pandas as pd
 
-# Load CSV data
+# Memuat data CSV
 data = pd.read_csv("tips.csv")
 
-# User input for column selection (assuming "total_bill" and "tip")
-selected_column = st.selectbox("Select Column for Distribution", data.columns)
+# Pemilihan kolom oleh pengguna (asumsikan "total_bill" dan "tip")
+kolom_pilihan = st.selectbox("Pilih Kolom untuk Distribusi", data.columns)
 
-# Create a distribution chart (assuming "tip" column represents rating)
-st.subheader("Distribusi Rating dalam 5 Tahun Terakhir (Assuming 'tip' column)")
+# Bagan distribusi (asumsikan kolom "tip" mewakili rating)
+st.subheader("Distribusi Rating dalam 5 Tahun Terakhir (Mengasumsikan Kolom 'tip')")
+
+# Menangani data yang tidak memiliki kolom 'datetime'
 if 'datetime' in data.columns:
-    data['year'] = pd.to_datetime(data['datetime']).dt.year
-    filtered_data = data[data['year'] >= 2018]  # Filter for last 5 years (assuming 2023)
-    st.bar_chart(filtered_data[selected_column])  # Assuming 'tip' represents rating
+  data['tahun'] = pd.to_datetime(data['datetime']).dt.year  # Ekstraksi tahun
+  data_difilter = data[data['tahun'] >= 2018]  # Filter untuk 5 tahun terakhir (asumsi 2023)
+  st.bar_chart(data_difilter[kolom_pilihan])  # Bagan distribusi untuk kolom yang dipilih
 else:
-    st.write("Data does not contain a 'datetime' column for year extraction.")
+  st.write("Data tidak mengandung kolom 'datetime' untuk ekstraksi tahun.")
 
-# Streamlit deprecation warning handling
+# Penanganan peringatan deprekasi Streamlit
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
-if __name__ == "__main__":
-    run()
+# Hapus fungsi run jika tidak diperlukan (sesuaikan dengan kode Anda)
+# if __name__ == "__main__":
+#     run()
