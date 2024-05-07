@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 # Load the data
-data = pd.read_csv("data.csv")
+data = pd.read_csv("C:\\Users\\ESTI2022\\Downloads\\tips.csv")
 
 # User input for selecting columns (optional)
 selected_columns = st.multiselect("Select Columns for Visualization", data.columns)
