@@ -1,26 +1,64 @@
+# Copyright (c) Streamlit Inc. (2018-2022) Snowflake Inc. (2022)
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import streamlit as st
+from streamlit.logger import get_logger
+
+LOGGER = get_logger(__name__)
+
+
+def run():
+    st.set_page_config(
+        page_title="Hello",
+        page_icon="👋",
+    )
+
+    st.write("# Welcome to Streamlit! 👋")
+
+    st.sidebar.success("Select a demo above.")
+
+    st.markdown(
+        """
+        Streamlit is an open-source app framework built specifically for
+        Machine Learning and Data Science projects.
+        **👈 Select a demo from the sidebar** to see some examples
+        of what Streamlit can do!
+        ### Want to learn more?
+        - Check out [streamlit.io](https://streamlit.io)
+        - Jump into our [documentation](https://docs.streamlit.io)
+        - Ask a question in our [community
+          forums](https://discuss.streamlit.io)
+        ### See more complex demos
+        - Use a neural net to [analyze the Udacity Self-driving Car Image
+          Dataset](https://github.com/streamlit/demo-self-driving)
+        - Explore a [New York City rideshare dataset](https://github.com/streamlit/demo-uber-nyc-pickups)
+    """
+    )
+
+
+if __name__ == "__main__":
+    run()
+
 import streamlit as st
 import pandas as pd
 
-# Load the data
-data = pd.read_csv("C:\\Users\\ESTI2022\\Downloads\\tips.csv")
+# Load CSV data
+data = pd.read_csv("tips.csv")
 
-# User input for selecting columns (optional)
-selected_columns = st.multiselect("Select Columns for Visualization", data.columns)
+# Display the data as a table
+st.title("Data Visualization")
+st.write(data)
 
-# Display the data as a table (optional)
-st.header("Data")
-st.write(data.head(10))
-
-# Create charts
-st.subheader("Data Visualization")
-if selected_columns:
-    for col in selected_columns:
-        st.bar_chart(data[col])  # Replace with appropriate chart type
-else:
-    st.write("Select columns to visualize.")
-
-# Streamlit deprecation warning handling
-st.set_option('deprecation.showPyplotGlobalUse', False)
-
-if __name__ == "__main__":
-    pass  # Keep this line to avoid errors when running the script directly
+# Create a chart from the data
+st.bar_chart(data["column_name"])
