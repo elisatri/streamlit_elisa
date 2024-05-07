@@ -104,6 +104,4 @@ else:
 # Call the function to create charts based on user selection (or default)
 create_charts(selected_column if selected_column else "total_bill")
 
-if __name__ == "__main__":
-  run()
 
