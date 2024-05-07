@@ -1,26 +1,26 @@
 import streamlit as st
 import pandas as pd
 
-# Memuat data CSV
-data = pd.read_csv("tips.csv")
+# Load the data
+data = pd.read_csv("data.csv")
 
-# Pemilihan kolom oleh pengguna (asumsikan "total_bill" dan "tip")
-kolom_pilihan = st.selectbox("Pilih Kolom untuk Distribusi", data.columns)
+# User input for selecting columns (optional)
+selected_columns = st.multiselect("Select Columns for Visualization", data.columns)
 
-# Bagan distribusi (asumsikan kolom "tip" mewakili rating)
-st.subheader("Distribusi Rating dalam 5 Tahun Terakhir (Mengasumsikan Kolom 'tip')")
+# Display the data as a table (optional)
+st.header("Data")
+st.write(data.head(10))
 
-# Menangani data yang tidak memiliki kolom 'datetime'
-if 'datetime' in data.columns:
-  data['tahun'] = pd.to_datetime(data['datetime']).dt.year  # Ekstraksi tahun
-  data_difilter = data[data['tahun'] >= 2018]  # Filter untuk 5 tahun terakhir (asumsi 2023)
-  st.bar_chart(data_difilter[kolom_pilihan])  # Bagan distribusi untuk kolom yang dipilih
+# Create charts
+st.subheader("Data Visualization")
+if selected_columns:
+    for col in selected_columns:
+        st.bar_chart(data[col])  # Replace with appropriate chart type
 else:
-  st.write("Data tidak mengandung kolom 'datetime' untuk ekstraksi tahun.")
+    st.write("Select columns to visualize.")
 
-# Penanganan peringatan deprekasi Streamlit
+# Streamlit deprecation warning handling
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
-# Hapus fungsi run jika tidak diperlukan (sesuaikan dengan kode Anda)
-# if __name__ == "__main__":
-#     run()
+if __name__ == "__main__":
+    pass  # Keep this line to avoid errors when running the script directly
