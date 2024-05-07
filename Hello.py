@@ -1,64 +1,43 @@
-# Copyright (c) Streamlit Inc. (2018-2022) Snowflake Inc. (2022)
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-import streamlit as st
-from streamlit.logger import get_logger
-
-LOGGER = get_logger(__name__)
-
-
-def run():
-    st.set_page_config(
-        page_title="Hello",
-        page_icon="👋",
-    )
-
-    st.write("# Welcome to Streamlit! 👋")
-
-    st.sidebar.success("Select a demo above.")
-
-    st.markdown(
-        """
-        Streamlit is an open-source app framework built specifically for
-        Machine Learning and Data Science projects.
-        **👈 Select a demo from the sidebar** to see some examples
-        of what Streamlit can do!
-        ### Want to learn more?
-        - Check out [streamlit.io](https://streamlit.io)
-        - Jump into our [documentation](https://docs.streamlit.io)
-        - Ask a question in our [community
-          forums](https://discuss.streamlit.io)
-        ### See more complex demos
-        - Use a neural net to [analyze the Udacity Self-driving Car Image
-          Dataset](https://github.com/streamlit/demo-self-driving)
-        - Explore a [New York City rideshare dataset](https://github.com/streamlit/demo-uber-nyc-pickups)
-    """
-    )
-
-
-if __name__ == "__main__":
-    run()
-
 import streamlit as st
 import pandas as pd
+import matplotlib.pyplot as plt  # Import for scatter plot
 
 # Load CSV data
 data = pd.read_csv("tips.csv")
 
-# Display the data as a table
+# Display the data as a table (assuming "tips.csv" has relevant columns)
 st.title("Data Visualization")
 st.write(data)
 
-# Create a chart from the data
-st.bar_chart(data["column_name"])
+# User input for column selection (assuming "total_bill" and "tip")
+selected_x_column = st.selectbox("Select X-axis Column", data.columns)
+selected_y_column = st.selectbox("Select Y-axis Column", data.columns)
+
+# Create a scatter plot using Matplotlib
+fig, ax = plt.subplots(figsize=(8, 5))  # Set figure size for better visualization
+ax.scatter(data[selected_x_column], data[selected_y_column])
+
+# Customize scatter plot (optional)
+ax.set_xlabel(selected_x_column)
+ax.set_ylabel(selected_y_column)
+ax.set_title(f"Scatter Plot of {selected_x_column} vs. {selected_y_column}")
+
+# Display the scatter plot using Streamlit
+st.subheader("Scatter Plot")
+st.pyplot(fig)
+
+# Additional subheader and chart based on ratings' feedback
+st.subheader("Distribusi Rating dalam 5 Tahun Terakhir (Assuming 'tip' column)")
+# Assuming data has a 'datetime' column for year extraction
+if 'datetime' in data.columns:
+    data['year'] = pd.to_datetime(data['datetime']).dt.year
+    filtered_data = data[data['year'] >= 2018]  # Filter for last 5 years (assuming 2023)
+    st.bar_chart(filtered_data['tip'])  # Assuming 'tip' represents rating
+else:
+    st.write("Data does not contain a 'datetime' column for year extraction.")
+
+# Streamlit deprecation warning handling
+st.set_option('deprecation.showPyplotGlobalUse', False)
+
+if __name__ == "__main__":
+    run()
